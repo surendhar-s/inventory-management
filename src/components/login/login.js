@@ -25,7 +25,8 @@ class Login extends Component {
   }
 
   handleFormSubmit = e => {
-    console.log("Handle submit");
+    localStorage.setItem("isLoggedIn","true")
+    this.props.history.replace("/")
   }
 
   render() {

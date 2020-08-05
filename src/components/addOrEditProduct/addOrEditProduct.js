@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Header from '../header/header';
 
 class AddOrEditProduct extends Component {
   constructor(props) {
@@ -27,10 +26,14 @@ class AddOrEditProduct extends Component {
   setImage = (e) => {
     this.setImage({ imagePath: e.target.value })
   }
+  componentDidMount=()=>{
+    if(!localStorage.getItem("isLoggedIn")){
+      this.props.history.replace("/login")
+    }
+  }
   render() {
     return (
       <div>
-        <Header />
         <div className="form-container">
           <div className="con">
             <header className="head-form login-header">

@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
-import Header from '../header/header';
 
 class Dashboard extends Component {
+  componentDidMount=()=>{
+    if(!localStorage.getItem("isLoggedIn")){
+      this.props.history.replace("/login")
+    }
+  }
   render() {
     return (
       <div>
-        <Header />
+        
       </div>
     );
   }

@@ -3,6 +3,7 @@ import Register from "../components/register/register"
 import Dashboard from "../components/dashboard/dashboard";
 import AddOrEditProduct from "../components/addOrEditProduct/addOrEditProduct";
 import ListAllProducts from "../components/listAllProducts/listAllProducts";
+import Home from "../components/home/home";
 
 const routes = [
     {
@@ -16,19 +17,19 @@ const routes = [
         access: "public"
     },
     {
-        path: "/dashboard",
-        component: Dashboard,
-        access: "public"
+        path: "/",
+        component: Home,
+        access: "private"
     },
     {
         path: "/addoredit",
         component: AddOrEditProduct,
-        access: "public"
+        access: "private"
     },
     {
         path: "/listAll",
         component: ListAllProducts,
-        access: "public"
+        access: "private"
     }
 ]
 
