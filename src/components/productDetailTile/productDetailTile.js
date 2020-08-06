@@ -5,7 +5,7 @@ class ProductDetailTile extends Component {
     super(props)
     this.state = {
       productName: "",
-      productId: 0,
+      id: 0,
       productPrice: 0,
       productCategory: "",
       productQuantity: 0,
@@ -15,7 +15,7 @@ class ProductDetailTile extends Component {
   componentDidMount = () => {
     this.setState({
       productName: this.props.productName,
-      productId: this.props.productId,
+      id: this.props.id,
       productPrice: this.props.productPrice,
       productCategory: this.props.productCategory,
       productQuantity: this.props.productQuantity,

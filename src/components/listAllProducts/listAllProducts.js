@@ -1,20 +1,27 @@
 import React, { Component } from 'react';
 import Axios from 'axios';
-import ProductTile from "../productTile/productTile"
+import MaterialTable from 'material-table';
 
 class ListAllProducts extends Component {
-  constructor(props){
+  constructor(props) {
     super(props)
     this.state = {
-      productsList: []
+      productsList: [],
+      columns: [
+        { title: 'Name', field: 'productName' },
+        { title: 'In-Stock', field: 'productStock', type: 'numeric' },
+        { title: 'Category', field: 'productCategory' },
+        { title: 'Price/Unit', field: 'productPrice', type: 'numeric' },
+        // { title: 'Description', field: 'productDescription'}
+      ]
     }
   }
-  componentDidMount=async()=>{
-    if(!localStorage.getItem("isLoggedIn")){
+  componentDidMount = async () => {
+    if (!localStorage.getItem("isLoggedIn")) {
       this.props.history.replace("/login")
     }
-    else{
-      const data = await Axios.get('/staticFiles/products.json');
+    else {
+      const data = await Axios.get('http://localhost:3001/products');
       this.setState({
         productsList: data.data
       })
@@ -23,13 +30,11 @@ class ListAllProducts extends Component {
   render() {
     return (
       <div>
-        <div className="prodctTileContainer" style={{display: "flex", flexDirection: "row", flexWrap: "wrap"}}>
-          {
-            this.state.productsList.map(data => {
-              return <ProductTile key={data.productsId} data={data}/>
-            })
-          }
-        </div>
+        <MaterialTable
+          title="Product List"
+          columns={this.state.columns}
+          data={this.state.productsList}
+        />
       </div>
     );
   }
