@@ -8,24 +8,20 @@ class ListAllProducts extends Component {
     this.state = {
       productsList: [],
       columns: [
-        { title: 'Name', field: 'productName' },
-        { title: 'In-Stock', field: 'productStock', type: 'numeric' },
-        { title: 'Category', field: 'productCategory' },
-        { title: 'Price/Unit', field: 'productPrice', type: 'numeric' },
+        { title: 'Name', field: 'productName', align: 'center' },
+        { title: 'In-Stock', field: 'productStock', type: 'numeric', align: 'center' },
+        { title: 'Category', field: 'productCategory', align: 'center' },
+        { title: 'Price/Unit', field: 'productPrice', type: 'numeric', align: 'center' },
         // { title: 'Description', field: 'productDescription'}
       ]
     }
   }
   componentDidMount = async () => {
-    if (!localStorage.getItem("isLoggedIn")) {
-      this.props.history.replace("/login")
-    }
-    else {
-      const data = await Axios.get('http://localhost:3001/products');
-      this.setState({
-        productsList: data.data
-      })
-    }
+    const currentUserId = localStorage.getItem("userId")
+    const data = await Axios.get('http://localhost:3001/products?productUserId=' + currentUserId);
+    this.setState({
+      productsList: data.data
+    })
   }
   render() {
     return (

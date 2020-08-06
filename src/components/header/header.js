@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import './header.css'
 class Header extends Component {
   handleLogout = () => {
-    localStorage.removeItem("isLoggedIn")
+    localStorage.removeItem("userId")
   }
   render() {
     return (

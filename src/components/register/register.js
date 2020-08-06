@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import './register.css';
+import Axios from 'axios';
+import bcrypt from 'bcryptjs'
 
 class Register extends Component {
 
@@ -11,7 +13,10 @@ class Register extends Component {
             email: null,
             password: null,
             name: null,
-            contactNumber: 1000000000
+            isValidPassword: false,
+            isValidEmail: false,
+            isNewEmail: false,
+            isAllFieldFilled: false
         }
     }
 
@@ -27,12 +32,58 @@ class Register extends Component {
         this.setState({ name: e.target.value })
     }
 
-    setContactNumberValue = (e) => {
-        this.setState({ contactNumber: e.target.value })
+    async checkFileds() {
+        if (this.state.name !== null && this.state.email !== null && this.state.password !== null) {
+            this.setState({ isAllFieldFilled: true })
+            await this.checkUserEmail()
+            if (this.state.password.length >= 5) {
+                this.setState({ isValidPassword: true })
+            }
+            else {
+                this.setState({ isValidPassword: false })
+            }
+            if ((this.state.email.indexOf('@') !== -1) && (this.state.email.indexOf('.') !== -1)) {
+                this.setState({ isValidEmail: true })
+            }
+            else {
+                this.setState({ isValidEmail: false })
+            }
+            if (this.state.isValidEmail && this.state.isValidPassword) {
+                return true
+            }
+        }
+        else {
+            this.setState({ isAllFieldFilled: false })
+            return false
+        }
+    }
+    checkUserEmail = async () => {
+        const data = await Axios.get("http://localhost:3001/userDb?email=" + this.state.email)
+        if (data.data.length === 0) {
+            this.setState({
+                isNewEmail: true
+            })
+        }
+        else {
+            this.setState({
+                isNewEmail: false
+            })
+        }
     }
 
     handleSubmit = async () => {
-        console.log("Handle Submit");
+        this.flag = true
+        if (await this.checkFileds() && this.state.isNewEmail) {
+            const details = {
+                name: this.state.name,
+                password: await bcrypt.hash(this.state.password, 12),
+                // password: this.state.password,
+                email: this.state.email
+            }
+            const data = await Axios.post("http://localhost:3001/userDb", details)
+            console.log(data);
+            this.props.history.replace("/login");
+        }
     }
 
     render() {
@@ -51,9 +102,16 @@ class Register extends Component {
                         <br />
                         <input className="form-input" type="password" placeholder="Password*" id="pwd" name="password" onChange={this.setPasswordValue} required />
                         <br />
-                        <input className="form-input" type="text" placeholder="Mobile number without +" onChange={this.setContactNumberValue} />
-                        <br />
                         <button className="button log-in" type="submit" onClick={this.handleSubmit}> Sign up </button>
+                    </div>
+                    <div>
+                        {this.flag ? <div>{this.state.isAllFieldFilled ? <div>
+                            {this.state.isValidPassword ? <div>
+                                {this.state.isValidEmail ? <div>
+                                    {this.state.isNewEmail ? <div></div> : <div><span style={{ color: "red" }}>Email already registered.</span></div>}
+                                </div> : <div><span style={{ color: "red" }}>Please enter valid email</span></div>}
+                            </div> : <div><span style={{ color: "red" }}>Password should have a minimum of 5 characters</span></div>}
+                        </div> : <div><span style={{ color: "red" }}>Please fill all mandatory fields</span></div>}</div> : <div></div>}
                     </div>
                     <div>
                         <Link style={{ textDecoration: "none", color: "black" }} to={{ pathname: "/login" }} ><button className="button sign-up">Login</button></Link>
