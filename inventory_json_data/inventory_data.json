@@ -1,0 +1,120 @@
+{
+  "userDb": [
+    {
+      "name": "admin",
+      "password": "$2a$12$XAEsuvgHvk4n9ldyv4uD.Ot8naFhyqu5zZ5hBGf7yB3Ok93UmmnUW",
+      "email": "abc@xyz.com",
+      "id": 1
+    }
+  ],
+  "products": [
+    {
+      "productCategory": "Mobile",
+      "productName": "Apple iPhone XS",
+      "productStock": "20",
+      "productPrice": "93500.00",
+      "productDescription": "Flagship model for Apple in 2018",
+      "productUserId": "1",
+      "id": 1001
+    },
+    {
+      "id": 1002,
+      "productCategory": "Mobile",
+      "productName": "Apple Iphone XR",
+      "productStock": 14,
+      "productPrice": "56000.00",
+      "productDescription": "Relased in 2018 with XS",
+      "productUserId": 1
+    },
+    {
+      "productCategory": "Printer",
+      "productName": "Canon Pixma E510",
+      "productStock": "18",
+      "productPrice": "3263.05",
+      "productDescription": "Inkjet Printer",
+      "productUserId": "1",
+      "id": 1003
+    },
+    {
+      "id": 1004,
+      "productCategory": "Large Appliances",
+      "productName": "O-General AC",
+      "productStock": 6,
+      "productPrice": "51394.67",
+      "productDescription": "AC having capacity of 1.5ton",
+      "productUserId": 1
+    },
+    {
+      "id": 1005,
+      "productCategory": "Printer",
+      "productName": "HP M30",
+      "productStock": 23,
+      "productPrice": "9499.37",
+      "productDescription": "Laser Printer",
+      "productUserId": 1
+    },
+    {
+      "id": 1006,
+      "productCategory": "Mobile",
+      "productName": "OnePlus Nord",
+      "productStock": 10,
+      "productPrice": "28053.57",
+      "productDescription": "12GB-256GB RAM & ROM respectively",
+      "productUserId": 1
+    },
+    {
+      "id": 1007,
+      "productCategory": "Large Appliances",
+      "productName": "Bosch Washing Machine",
+      "productStock": 5,
+      "productPrice": "32002.93",
+      "productDescription": "7.5KG Fully automatic",
+      "productUserId": 1
+    },
+    {
+      "id": 1008,
+      "productCategory": "Bike Accessories",
+      "productName": "Open face Helmet",
+      "productStock": 40,
+      "productPrice": "3733.14",
+      "productDescription": "Royal Enfield Open face helmet",
+      "productUserId": 1
+    },
+    {
+      "id": 1010,
+      "productCategory": "Bike Accessories",
+      "productName": "StreetWing V2 Riding Jacket",
+      "productStock": 225,
+      "productPrice": "1812.23",
+      "productDescription": "Royal Enfield - Olive Green",
+      "productUserId": 1
+    },
+    {
+      "productCategory": "Something",
+      "productName": "Data 1",
+      "productStock": "21",
+      "productPrice": "252",
+      "productDescription": "Hello World",
+      "productUserId": "1",
+      "id": 1011
+    },
+    {
+      "productCategory": "category2",
+      "productName": "Data 2",
+      "productStock": "8",
+      "productPrice": "9",
+      "productDescription": "Hello World!!!",
+      "productUserId": "1",
+      "id": 1012
+    },
+    {
+      "productCategory": "category3",
+      "productName": "Data 3",
+      "productStock": "54",
+      "productPrice": "9",
+      "productDescription": "fahidsfiuaf",
+      "productUserId": "1",
+      "id": 1013
+    }
+  ]
+}

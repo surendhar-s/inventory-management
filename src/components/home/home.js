@@ -2,17 +2,26 @@ import React, { Component } from 'react';
 import Header from '../header/header';
 import './home.css'
 import Footer from '../footer/footer';
+import Dashboard from "../dashboard/dashboard";
+import ListAll from "../listAllProducts/listAllProducts";
 import ListAllProducts from '../listAllProducts/listAllProducts';
-import DummyEmployeeComponent from '../dummyEmployeeComponent/dummyEmployeeComponent';
-
+import AddOrEditProduct from '../addOrEditProduct/addOrEditProduct';
 class Home extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      isDashboardSelected: true,
+      isListAllSelected: false,
+      isAddProductSelected: false
+    }
+  }
   componentDidMount = () => {
     const isLoggedIn = localStorage.getItem("userId")
     if (localStorage.getItem("userId") === null) {
       this.props.history.replace("/login")
     }
     else {
-      
+
     }
   }
   render() {
@@ -20,9 +29,14 @@ class Home extends Component {
       <div>
         <Header />
         <div className="main-container">
-          {/* <ProductDetailTile productName="" id="" productPrice="" productCategory="" productQuantity="" productDescription=""/> */}
-          {/* <ProductDetailTile productName={"Sample"} id={100} productPrice={100.0} productCategory={"Fashion"} productQuantity={10} productDescription={"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."} /> */}
-          {/* <ListAllProducts /> */}
+          <div className="home-button-container">
+            <button className="button home-button" onClick={() => this.setState({ isDashboardSelected: true, isListAllSelected: false, isAddProductSelected: false })}>Dashboard</button>
+            <button className="button home-button" onClick={() => this.setState({ isDashboardSelected: false, isListAllSelected: true, isAddProductSelected: false })}>ListAll</button>
+            <button className="button home-button" onClick={() => this.setState({ isDashboardSelected: false, isListAllSelected: false, isAddProductSelected: true })}>Add Product</button>
+          </div>
+          {this.state.isDashboardSelected ? <Dashboard /> : null}
+          {this.state.isListAllSelected ? <ListAll /> : null}
+          {this.state.isAddProductSelected ? <AddOrEditProduct /> : null}
         </div>
         <Footer />
       </div>

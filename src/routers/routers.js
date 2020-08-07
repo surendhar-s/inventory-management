@@ -4,6 +4,7 @@ import Dashboard from "../components/dashboard/dashboard";
 import AddOrEditProduct from "../components/addOrEditProduct/addOrEditProduct";
 import ListAllProducts from "../components/listAllProducts/listAllProducts";
 import Home from "../components/home/home";
+import ProductDetailTile from "../components/productDetailTile/productDetailTile";
 
 const routes = [
     {
@@ -29,6 +30,11 @@ const routes = [
     {
         path: "/listAll",
         component: ListAllProducts,
+        access: "private"
+    },
+    {
+        path: "/productDetail",
+        component: ProductDetailTile,
         access: "private"
     }
 ]
