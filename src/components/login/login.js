@@ -66,16 +66,6 @@ class Login extends Component {
     })
   }
 
-  renderHome = () => {
-    if (localStorage.getItem("userId") !== undefined) {
-      console.log("User detected");
-      // this.props.history.push("/")
-    }
-    else {
-      console.log("User not detected");
-    }
-  }
-
   render() {
     return (
       <div className="form-container">
@@ -83,7 +73,7 @@ class Login extends Component {
           active={this.state.dataLoading}
           spinner
           text='Please wait...'>
-          {this.renderHome()}
+          {/* {this.renderHome()} */}
           <div className="con">
             <header className="login-header head-form">
               <h2>Log In</h2>

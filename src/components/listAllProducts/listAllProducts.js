@@ -115,35 +115,37 @@ class ListAllProducts extends Component {
           </select>
           {/* <div style={{ backgroundImage: "linear-gradient(-225deg, #E3FDF5 50%, #FFE6FA 50%)", padding: "10px", margin:"0px 80px" }}> */}
           <div className="table-container">
-            <table className="product-table">
-              <thead>
-                <tr className="product-table-tr" style={{ background: "#d8d8d861" }}>
-                  <th className="product-table-th">Name</th>
-                  <th className="product-table-th">Category</th>
-                  <th className="product-table-th">In-Stock</th>
-                  <th className="product-table-th">Price per Unit</th>
-                  <th className="product-table-th" colSpan="2">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {this.state.productsList.map(data => {
-                  return (
-                    <tr className="product-table-tr" key={data.id}>
-                      <td className="product-table-td">{data.productName}</td>
-                      <td className="product-table-td">{data.productCategoryName}</td>
-                      <td className="product-table-td">{data.productStock}</td>
-                      <td className="product-table-td">{data.productPrice}</td>
-                      <td className="product-table-td"><Link to={{
-                        pathname: "/productDetail",
-                        state: { productData: data }
-                      }}
-                        style={{ textDecoration: "none" }}><button className="button home-button view-button">View</button></Link></td>
-                      <td><button className="button home-button delete-button" onClick={() => this.deleteProduct(data.id)}>Delete</button></td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+            {
+              this.state.productsList.length === 0 ? <h3><span>No product in inventory</span></h3> : <table className="product-table">
+                <thead>
+                  <tr className="product-table-tr" style={{ background: "#d8d8d861" }}>
+                    <th className="product-table-th">Name</th>
+                    <th className="product-table-th">Category</th>
+                    <th className="product-table-th">In-Stock</th>
+                    <th className="product-table-th">Price per Unit</th>
+                    <th className="product-table-th" colSpan="2">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {this.state.productsList.map(data => {
+                    return (
+                      <tr className="product-table-tr" key={data.id}>
+                        <td className="product-table-td">{data.productName}</td>
+                        <td className="product-table-td">{data.productCategoryName}</td>
+                        <td className="product-table-td">{data.productStock}</td>
+                        <td className="product-table-td">{data.productPrice}</td>
+                        <td className="product-table-td"><Link to={{
+                          pathname: "/productDetail",
+                          state: { productData: data }
+                        }}
+                          style={{ textDecoration: "none" }}><button className="button home-button view-button">View</button></Link></td>
+                        <td><button className="button home-button delete-button" onClick={() => this.deleteProduct(data.id)}>Delete</button></td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            }
           </div>
         </div>
       </div >

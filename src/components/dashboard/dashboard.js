@@ -12,18 +12,18 @@ class Dashboard extends Component {
       chartOption: []
     }
     this.chartOption = {
-			animationEnabled: true,
-			exportEnabled: true,
-			theme: "dark2", // "light1", "dark1", "dark2"
-			title:{
-				text: "Trip Expenses"
-			},
-			data: [{
-				type: "bar",
-				indexLabel: "{label}: {y}",		
-				dataPoints: []
-			}]
-		}
+      animationEnabled: true,
+      exportEnabled: true,
+      theme: "dark2", // "light1", "dark1", "dark2"
+      title: {
+        text: "Trip Expenses"
+      },
+      data: [{
+        type: "bar",
+        indexLabel: "{label}: {y}",
+        dataPoints: []
+      }]
+    }
   }
   componentDidMount = async () => {
     let produtData = await Axios.get("http://localhost:3001/products?productUserId=" + localStorage.getItem("userId"))
@@ -48,7 +48,7 @@ class Dashboard extends Component {
   render() {
     return (
       <div>
-        <CanvasJsChart options={this.state.chartOption} />
+        {this.chartOption.data[0].dataPoints.length != 0 ? <CanvasJsChart options={this.state.chartOption} /> : <h3>Add product in inventory</h3>}
       </div>
     );
   }

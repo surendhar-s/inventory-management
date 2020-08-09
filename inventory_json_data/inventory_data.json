@@ -5,6 +5,12 @@
       "password": "$2a$12$XAEsuvgHvk4n9ldyv4uD.Ot8naFhyqu5zZ5hBGf7yB3Ok93UmmnUW",
       "email": "abc@xyz.com",
       "id": 1
+    },
+    {
+      "name": "Person 2",
+      "password": "$2a$12$7awmgwMvySBviyeMFClYpOa0X4KWA7h4KdSfONoP9ZgV9K4DN4rJq",
+      "email": "new@xyz.com",
+      "id": 2
     }
   ],
   "products": [
