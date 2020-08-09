@@ -8,6 +8,8 @@ This project require 2 two server to run.
 
 ### `npm run launch`
 This command is used to start the project. This command itself runs both React and JSON-Server concurrently.
++ Default Username: abc@xyz.com
++ Default Password: admin
 
 ## Functionalities
 * Login 
