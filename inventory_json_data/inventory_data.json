@@ -22,7 +22,7 @@
     {
       "productCategory": "3",
       "productName": "Hello World",
-      "productStock": "235",
+      "productStock": "23",
       "productPrice": "321",
       "productDescription": "Sample product to demo",
       "productAddedOn": "2020-08-08T15:49:30.022Z",
@@ -33,7 +33,7 @@
     {
       "productCategory": "2",
       "productName": "Sample Product",
-      "productStock": "5",
+      "productStock": "50",
       "productPrice": "2855",
       "productDescription": "asdf",
       "productAddedOn": "2020-08-09T03:52:16.194Z",
@@ -44,7 +44,7 @@
     {
       "productCategory": "1",
       "productName": "iPhone",
-      "productStock": "5",
+      "productStock": "59",
       "productPrice": "90999",
       "productDescription": "Apple",
       "productAddedOn": "2020-08-09T04:54:46.245Z",
@@ -55,7 +55,7 @@
     {
       "productCategory": "4",
       "productName": "Sasasda",
-      "productStock": "4",
+      "productStock": "43",
       "productPrice": "554",
       "productDescription": "dfsdgsfjhdsg",
       "productAddedOn": "2020-08-09T08:07:46.782Z",
