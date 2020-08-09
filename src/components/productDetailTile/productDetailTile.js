@@ -3,6 +3,8 @@ import Header from '../header/header';
 import Footer from '../footer/footer';
 import { Link } from 'react-router-dom';
 import Axios from 'axios';
+import moment from 'moment'
+import './productDetailTile.css'
 
 class ProductDetailTile extends Component {
   constructor(props) {
@@ -14,26 +16,60 @@ class ProductDetailTile extends Component {
       productCategory: "",
       productStock: 0,
       productDescription: "",
-      isEditable: false
+      productAddedOn: "",
+      productUpdatedOn: "",
+      isEditable: false,
+      categoryName: "",
+      errors: {
+        name: '',
+        quantity: '',
+        price: '',
+        description: '',
+      },
     }
     this.intialStateValues = {
-      initalProductName: this.props.location.state.productData.productName,
-      initalPd: this.props.location.state.productData.id,
-      initalProductPrice: this.props.location.state.productData.productPrice,
-      initalProductCategory: this.props.location.state.productData.productCategory,
-      initalproductStock: this.props.location.state.productData.productStock,
-      initalProductDescription: this.props.location.state.productData.productDescription
+      initialProductName: this.props.location.state.productData.productName,
+      initialPd: this.props.location.state.productData.id,
+      initialProductPrice: this.props.location.state.productData.productPrice,
+      initialProductCategory: this.props.location.state.productData.productCategory,
+      initialProductStock: this.props.location.state.productData.productStock,
+      initialProductAddedOn: this.props.location.state.productData.productAddedOn,
+      initialProductUpdatedOn: this.props.location.state.productData.productUpdatedOn,
+      initialProductDescription: this.props.location.state.productData.productDescription,
+      initialProductCategoryName: this.props.location.state.productData.productCategoryName
     }
   }
+  setErrorFiled = (fieldName, filedValue) => {
+    let errors = this.state.errors
+    switch (fieldName) {
+      case 'name':
+        errors.name = filedValue === "" ? 'Product name should not be empty' : ''
+        break;
+      case 'price':
+        errors.price = filedValue === "" || filedValue == 0 ? 'Price should be greater than 0' : ''
+        break;
+      case 'quantity':
+        errors.quantity = filedValue === "" || filedValue == 0 ? 'Quantity should be greater than or equal to 1' : ''
+        break;
+      case 'description':
+        errors.description = filedValue.length <= 9 ? 'Description should have minimum of 10 character' : ''
+        break;
+      default:
+        break;
+    }
+    this.setState({ errors, [fieldName]: filedValue });
+  }
   componentDidMount = () => {
-    // console.log(this.props.location.state);
     this.setState({
       productName: this.props.location.state.productData.productName,
       id: this.props.location.state.productData.id,
       productPrice: this.props.location.state.productData.productPrice,
       productCategory: this.props.location.state.productData.productCategory,
       productStock: this.props.location.state.productData.productStock,
-      productDescription: this.props.location.state.productData.productDescription
+      productDescription: this.props.location.state.productData.productDescription,
+      productAddedOn: this.props.location.state.productData.productAddedOn,
+      productUpdatedOn: this.props.location.state.productData.productUpdatedOn,
+      productCategoryName: this.props.location.state.productData.productCategoryName,
     })
   }
 
@@ -43,15 +79,19 @@ class ProductDetailTile extends Component {
     })
   }
   setNameValue = (e) => {
+    this.setErrorFiled(e.target.name, e.target.value)
     this.setState({ productName: e.target.value })
   }
   setQuantity = (e) => {
+    this.setErrorFiled(e.target.name, e.target.value)
     this.setState({ productStock: e.target.value })
   }
   setDescription = (e) => {
+    this.setErrorFiled(e.target.name, e.target.value)
     this.setState({ productDescription: e.target.value })
   }
   setPricePerUnit = (e) => {
+    this.setErrorFiled(e.target.name, e.target.value)
     this.setState({ productPrice: e.target.value })
   }
   editData = async () => {
@@ -61,6 +101,8 @@ class ProductDetailTile extends Component {
       productStock: this.state.productStock,
       productPrice: this.state.productPrice,
       productDescription: this.state.productDescription,
+      productAddedOn: this.state.productAddedOn,
+      productUpdatedOn: moment(),
       productUserId: localStorage.getItem("userId")
     })
     this.setState({
@@ -68,46 +110,125 @@ class ProductDetailTile extends Component {
       productStock: data.data.productStock,
       productPrice: data.data.productPrice,
       productDescription: data.data.productDescription,
+      isEditable: false
     })
   }
   cancelEdit = () => {
     this.setState({
-      productName: this.intialStateValues.initalProductName,
-      productPrice: this.intialStateValues.initalProductPrice,
-      productStock: this.intialStateValues.initalproductStock,
-      productDescription: this.intialStateValues.initalProductDescription,
+      productName: this.intialStateValues.initialProductName,
+      productPrice: this.intialStateValues.initialProductPrice,
+      productStock: this.intialStateValues.initialProductStock,
+      productDescription: this.intialStateValues.initialProductDescription,
       isEditable: false
     })
   }
+  getTimeFromString = (dataInString) => {
+    let momnetObject = moment(dataInString)
+    return momnetObject.format("DD/MM/yyyy")
+  }
+  validateForm = () => {
+    if (this.state.errors.name == "" &&
+      this.state.errors.price == "" &&
+      this.state.errors.description == "" &&
+      this.state.errors.quantity == "") {
+      return false
+    }
+    else {
+      return true
+    }
+  }
   render() {
+    const { errors } = this.state
+    let isSubmissionDisabled = this.validateForm()
     return (
       <div>
         <Header />
         <div className="main-container">
-          {this.state.isEditable ? <div>
-            <p>Edit Details</p>
-            <label>Name: </label>
-            <input type="text" defaultValue={this.intialStateValues.initalProductName} onChange={this.setNameValue} />
-            <br />
-            <label>Price per Unit: </label>
-            <input type="numeber" defaultValue={this.intialStateValues.initalProductPrice} onChange={this.setPricePerUnit} />
-            <br />
-            <label>Quantity: </label>
-            <input type="number" defaultValue={this.intialStateValues.initalproductStock} onChange={this.setQuantity} />
-            <br />
-            <label>Descrption: </label>
-            <input type="text" defaultValue={this.intialStateValues.initalProductDescription} onChange={this.setDescription} />
-            <br />
-            <button onClick={this.editData}><span>Save</span></button>
-            <button onClick={this.cancelEdit}>Cancel</button>
+          {this.state.isEditable ? <div className="product-detail-container flex-container">
+            <h2>Edit Product Details</h2>
+            <hr />
+            <div>
+              <div className="flex-area">
+                <label className="data-item">Name: </label>
+                <input className="form-input editable data-item" type="text" name="name" defaultValue={this.intialStateValues.initialProductName} onChange={this.setNameValue} />
+                {errors.name.length > 0 && <span className='error'>{errors.name}</span>}
+              </div>
+              <div className="flex-area">
+                <label className="data-item">Price per Unit: </label>
+                <input className="form-input editable data-item" type="number" name="price" defaultValue={parseInt(this.intialStateValues.initialProductPrice)} onChange={this.setPricePerUnit} />
+                {errors.price.length > 0 && <span className='error'>{errors.price}</span>}
+              </div>
+              <div className="flex-area">
+                <label className="data-item">Quantity: </label>
+                <input className="form-input editable data-item" type="number" name="quantity" defaultValue={parseInt(this.intialStateValues.initialProductStock)} onChange={this.setQuantity} />
+                {errors.quantity.length > 0 && <span className='error'>{errors.quantity}</span>}
+              </div>
+              <div className="flex-area">
+                <label className="data-item">Descrption: </label>
+                <input className="form-input editable data-item" type="text" name="description" defaultValue={this.intialStateValues.initialProductDescription} onChange={this.setDescription} />
+                {errors.description.length > 0 && <span className='error'>{errors.description}</span>}
+              </div>
+              <div className="flex-area button-holder">
+                <button className="operational-button" onClick={this.editData} disabled={isSubmissionDisabled}><span>Save</span></button>
+                <button className="operational-button" onClick={this.cancelEdit}>Cancel</button>
+                <span></span>
+              </div>
+            </div>
           </div> : <div>
-              <p>Name: {this.state.productName}</p>
-              <p>Price: {this.state.productPrice}</p>
-              <p>Quantity: {this.state.productStock}</p>
-              <p>Category: {this.state.productCategory}</p>
-              <p>Description: {this.state.productDescription}</p>
-              <button onClick={this.toggleEditable}><span>Edit</span></button>
-              <Link to="/"><button>Back</button></Link>
+              <h2>Product Detail</h2>
+              <hr />
+              <table className="product-detail-container">
+                <tbody>
+                  <tr>
+                    <td>
+                      <h3>Name:</h3>
+                    </td>
+                    <td>{this.state.productName}</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <h3>Price:</h3>
+                    </td>
+                    <td>{this.state.productPrice}</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <h3>Category:</h3>
+                    </td>
+                    <td>{this.state.productCategoryName}</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <h3>Quantity:</h3>
+                    </td>
+                    <td>{this.state.productStock}</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <h3>Description</h3>
+                    </td>
+                    <td>{this.state.productDescription}</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <h3>Added on:</h3>
+                    </td>
+                    <td>{this.state.productAddedOn}</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <h3>Last Updated:</h3>
+                    </td>
+                    <td>{!this.state.productUpdatedOn ? <span>NA</span> : this.getTimeFromString(this.state.productUpdatedOn)}</td>
+                  </tr>
+                  <tr style={{ textAlignLast: "center" }}>
+                    <td>
+                      <button className="operational-button" onClick={this.toggleEditable}><span>Edit</span></button>
+                    </td>
+                    <td><Link to="/"><button className="operational-button">Back</button></Link></td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           }
         </div>

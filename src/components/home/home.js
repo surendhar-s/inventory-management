@@ -4,8 +4,8 @@ import './home.css'
 import Footer from '../footer/footer';
 import Dashboard from "../dashboard/dashboard";
 import ListAll from "../listAllProducts/listAllProducts";
-import ListAllProducts from '../listAllProducts/listAllProducts';
 import AddOrEditProduct from '../addOrEditProduct/addOrEditProduct';
+import { withRouter } from 'react-router-dom';
 class Home extends Component {
   constructor(props) {
     super(props)
@@ -16,13 +16,16 @@ class Home extends Component {
     }
   }
   componentDidMount = () => {
-    const isLoggedIn = localStorage.getItem("userId")
     if (localStorage.getItem("userId") === null) {
       this.props.history.replace("/login")
     }
-    else {
-
-    }
+  }
+  gotCallBackFromAddProduct = () => {
+    this.setState({
+      isDashboardSelected: false,
+      isListAllSelected: true,
+      isAddProductSelected: false
+    })
   }
   render() {
     return (
@@ -36,7 +39,7 @@ class Home extends Component {
           </div>
           {this.state.isDashboardSelected ? <Dashboard /> : null}
           {this.state.isListAllSelected ? <ListAll /> : null}
-          {this.state.isAddProductSelected ? <AddOrEditProduct /> : null}
+          {this.state.isAddProductSelected ? <AddOrEditProduct callBackFunctionToHome={this.gotCallBackFromAddProduct}/> : null}
         </div>
         <Footer />
       </div>
@@ -44,4 +47,4 @@ class Home extends Component {
   }
 }
 
-export default Home;
+export default withRouter(Home);

@@ -15,4 +15,11 @@
     width: auto;
     height: 50px;
     margin: 15px 0px 0px 15px;
+    font-family: Arial, Helvetica, sans-serif;
 }
+
+@media screen and (max-width: 410px){
+    .title {
+      font-size: large;
+    }
+  }
