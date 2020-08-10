@@ -16,7 +16,7 @@ class Dashboard extends Component {
       exportEnabled: true,
       theme: "dark2", // "light1", "dark1", "dark2"
       title: {
-        text: "Trip Expenses"
+        text: "Products Vs Category"
       },
       data: [{
         type: "bar",
@@ -35,11 +35,12 @@ class Dashboard extends Component {
       produtData.data.map(data => {
         let indices = categoryId.findIndex(e => e === parseInt(data.productCategory))
         productInStock[indices] = productInStock[indices] + parseInt(data.productStock)
+        return 0
       })
       for (var i = 0; i < categoryName.length; i++) {
         this.chartOption.data[0].dataPoints.push({ label: categoryName[i], y: productInStock[i] })
       }
-      console.log(this.chartOption);
+      // console.log(this.chartOption);
       this.setState({
         chartOption: this.chartOption
       })
@@ -48,7 +49,8 @@ class Dashboard extends Component {
   render() {
     return (
       <div>
-        {this.chartOption.data[0].dataPoints.length != 0 ? <CanvasJsChart options={this.state.chartOption} /> : <h3>Add product in inventory</h3>}
+        <hr />
+        {this.chartOption.data[0].dataPoints.length !== 0 ? <div style={{ padding: "15px" }}><CanvasJsChart options={this.state.chartOption} /></div> : <h3>Add product in inventory</h3>}
       </div>
     );
   }

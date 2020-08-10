@@ -48,7 +48,7 @@ class Login extends Component {
     if (this.state.email !== null && this.state.password !== null) {
       this.login()
         .then(res => {
-          console.log(res);
+          // console.log(res);
           if (res === false) {
             this.setState({ valid: true })
           }
@@ -81,11 +81,13 @@ class Login extends Component {
             </header>
             <br />
             <div>
-              <input className="form-input" id="txt-input" type="text" placeholder="Email" onChange={this.setEmailValue} required />
-              <br />
-              <input className="form-input" type="password" placeholder="Password" id="pwd" name="password" onChange={this.setPasswordValue} required />
-              <br />
-              <button className="button log-in" onClick={this.handleFormSubmit}> Log In </button>
+              <form>
+                <input className="form-input" id="txt-input" type="text" placeholder="Email" onChange={this.setEmailValue} required />
+                <br />
+                <input className="form-input" type="password" placeholder="Password" id="pwd" name="password" onChange={this.setPasswordValue} required />
+                <br />
+                <button className="button log-in" onClick={this.handleFormSubmit}> Log In </button>
+              </form>
             </div>
             {this.state.valid ? <div style={{ color: "red", textAlign: "center" }}>Invaild credentials!<br /></div> : <div></div>}
             <div>

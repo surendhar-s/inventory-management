@@ -23,10 +23,11 @@ class ListAllProducts extends Component {
     }, async () => {
       let categoryList = await Axios.get("http://localhost:3001/category")
       let tempList = []
-      this.state.productsList.map((data, index) => {
-        let category = categoryList.data.filter(data1 => data1.id == data.productCategory)
+      this.state.productsList.map((data) => {
+        let category = categoryList.data.filter(data1 => data1.id === parseInt(data.productCategory))
         data.productCategoryName = category[0].categoryName
         tempList.push(data)
+        return 0
       })
       this.setState({
         productsList: tempList,
@@ -35,20 +36,13 @@ class ListAllProducts extends Component {
       })
     })
   }
-  // shouldComponentUpdate = async () => {
-  //   const currentUserId = localStorage.getItem("userId")
-  //   const data = await Axios.get('http://localhost:3001/products?productUserId=' + currentUserId);
-  //   this.setState({
-  //     productsList: data.data,
-  //     initialData: data.data
-  //   })
-  // }
   deleteProduct = async (id) => {
     await Axios.delete("http://localhost:3001/products/" + id)
     let data = this.state.productsList.filter(oneData => {
       if (oneData.id !== id) {
         return oneData
       }
+      return 0
     })
     this.setState({
       productsList: data
@@ -66,6 +60,7 @@ class ListAllProducts extends Component {
         if (data.productName.toUpperCase().includes(inputValue.toUpperCase()) || data.productDescription.toUpperCase().includes(inputValue.toUpperCase())) {
           return data
         }
+        return 0
       })
       this.setState({
         productsList: filteredData

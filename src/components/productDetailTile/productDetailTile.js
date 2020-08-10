@@ -46,10 +46,10 @@ class ProductDetailTile extends Component {
         errors.name = filedValue === "" ? 'Product name should not be empty' : ''
         break;
       case 'price':
-        errors.price = filedValue === "" || filedValue == 0 ? 'Price should be greater than 0' : ''
+        errors.price = filedValue === "" || parseInt(filedValue) <= 0 ? 'Price should be greater than 0' : ''
         break;
       case 'quantity':
-        errors.quantity = filedValue === "" || filedValue == 0 ? 'Quantity should be greater than or equal to 1' : ''
+        errors.quantity = filedValue === "" || parseInt(filedValue) <= 0 ? 'Quantity should be greater than or equal to 1' : ''
         break;
       case 'description':
         errors.description = filedValue.length <= 9 ? 'Description should have minimum of 10 character' : ''
@@ -127,10 +127,10 @@ class ProductDetailTile extends Component {
     return momnetObject.format("DD/MM/yyyy")
   }
   validateForm = () => {
-    if (this.state.errors.name == "" &&
-      this.state.errors.price == "" &&
-      this.state.errors.description == "" &&
-      this.state.errors.quantity == "") {
+    if (this.state.errors.name === "" &&
+      this.state.errors.price === "" &&
+      this.state.errors.description === "" &&
+      this.state.errors.quantity === "") {
       return false
     }
     else {
