@@ -11,7 +11,8 @@ class ListAllProducts extends Component {
       searchValue: "",
       initialData: [],
       categoryList: [],
-      sortBy: "byName"
+      sortBy: "byName",
+      filterBy: "All-Cat"
     }
   }
   componentDidMount = async () => {
@@ -32,7 +33,7 @@ class ListAllProducts extends Component {
       this.setState({
         productsList: tempList,
         initialData: tempList,
-        categoryList: categoryList
+        categoryList: categoryList.data
       })
     })
   }
@@ -94,6 +95,20 @@ class ListAllProducts extends Component {
       })
     })
   }
+  filterDataProductByCategory = (e) => {
+    let filterBy = e.target.value
+    if (filterBy === "All-Cat") {
+      this.setState({
+        productsList: this.state.initialData
+      })
+    }
+    else {
+      let tempList = this.state.initialData.filter(data => parseInt(data.productCategory) === parseInt(filterBy))
+      this.setState({
+        productsList: tempList
+      })
+    }
+  }
   render() {
     return (
       <div>
@@ -107,6 +122,15 @@ class ListAllProducts extends Component {
             <option value="byPrice">Price</option>
             {/* <option value="byCategory">Category</option> */}
             <option value="byAvailability">Availabiliy</option>
+          </select>
+          <select className="sort-by" onChange={this.filterDataProductByCategory}>
+            <option disabled>Filter by category</option>
+            <option value="All-Cat">All Category</option>
+            {
+              this.state.categoryList.map(data => {
+                return <option key={data.id} value={data.id}>{data.categoryName}</option>
+              })
+            }
           </select>
           {/* <div style={{ backgroundImage: "linear-gradient(-225deg, #E3FDF5 50%, #FFE6FA 50%)", padding: "10px", margin:"0px 80px" }}> */}
           <div className="table-container">
