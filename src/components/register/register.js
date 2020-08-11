@@ -80,8 +80,8 @@ class Register extends Component {
                 // password: this.state.password,
                 email: this.state.email
             }
-            const data = await Axios.post("http://localhost:3001/userDb", details)
-            console.log(data);
+            await Axios.post("http://localhost:3001/userDb", details)
+            // console.log(data);
             this.props.history.replace("/login");
         }
     }

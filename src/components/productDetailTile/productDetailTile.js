@@ -137,9 +137,21 @@ class ProductDetailTile extends Component {
       return true
     }
   }
+  isSameForUpdate = () => {
+    if (this.state.productName !== this.intialStateValues.initialProductName ||
+      this.state.productStock !== this.intialStateValues.initialProductStock ||
+      this.state.productDescription !== this.intialStateValues.initialProductDescription ||
+      this.state.productPrice !== this.intialStateValues.initialProductPrice
+    ) {
+      return false
+    }
+    else {
+      return true
+    }
+  }
   render() {
     const { errors } = this.state
-    let isSubmissionDisabled = this.validateForm()
+    let isSubmissionDisabled = this.validateForm() || this.isSameForUpdate()
     return (
       <div>
         <Header />

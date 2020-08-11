@@ -14,13 +14,15 @@ class AddOrEditProduct extends Component {
       description: "",
       category: "",
       categoryList: [],
-      newCategorty: "",
+      newCategory: "",
       addNewCategoryEnabled: false,
+      addNewCategoryFailed: false,
       errors: {
         name: ' ',
         quantity: ' ',
         price: ' ',
         description: ' ',
+        newCategory: ' '
       },
     }
   }
@@ -38,6 +40,9 @@ class AddOrEditProduct extends Component {
         break;
       case 'description':
         errors.description = filedValue.length <= 9 ? 'Description should have minimum of 10 character' : ''
+        break;
+      case 'newCategory':
+        errors.newCategory = filedValue === "" ? 'Please specify category name or select from available one' : ''
         break;
       default:
         break;
@@ -95,8 +100,9 @@ class AddOrEditProduct extends Component {
     this.props.callBackFunctionToHome()
   }
   setNewCategoryValue = (e) => {
+    this.setErrorFiled(e.target.name, e.target.value)
     this.setState({
-      newCategorty: e.target.value
+      newCategory: e.target.value
     })
   }
   toggleAddingCategory = () => {
@@ -113,6 +119,38 @@ class AddOrEditProduct extends Component {
     }
     else {
       return true
+    }
+  }
+  addNewCategory = async () => {
+    if (this.state.newCategory !== "") {
+      let newCategory = this.state.newCategory
+      let checkFlag = true
+      let errors = this.state.errors
+      let errorNote = "Category already availbale, please select in dropdown"
+      this.state.categoryList.map(data => {
+        if (data.categoryName.toUpperCase() === newCategory.toUpperCase()) {
+          checkFlag = false
+          errors.newCategory = errorNote
+          this.setState({
+            addNewCategoryFailed: true,
+            errors: errors
+          })
+        }
+        return 0
+      })
+      if (checkFlag) {
+        await Axios.post("http://localhost:3001/category", {
+          categoryName: newCategory
+        })
+        errors.newCategory = ''
+        await this.fetchCategory()
+        this.setState({
+          addNewCategoryFailed: false,
+          addNewCategoryEnabled: false,
+          newCategory: "",
+          errors: ''
+        })
+      }
     }
   }
   render() {
@@ -150,13 +188,15 @@ class AddOrEditProduct extends Component {
               <br />
               <button style={{ display: "block", margin: "auto" }} onClick={this.toggleAddingCategory}>Click to add new category</button>
               {
-                this.state.addNewCategoryEnabled ? <div><input className="form-input" type="text" onChange={this.setNewCategoryValue} /><button className="button" style={{ width: "unset", background: "rgb(181 147 147)", margin: "0px auto 20px" }}>Add Category</button></div> : null
+                this.state.addNewCategoryEnabled ? <div>
+                  <input className="form-input" type="text" name="newCategory" placeholder="New Category" onChange={this.setNewCategoryValue} />
+                  {errors.newCategory.length > 0 && <div className="error-container"><span className='error'>{errors.newCategory}</span></div>}
+                  <button className="button" onClick={this.addNewCategory} style={{ width: "unset", background: "rgb(181 147 147)", margin: "0px auto 20px" }}>Add Category</button>
+                </div> : null
               }
               <input className="form-input" type="text" placeholder="Description" name="description" onChange={this.setDescription} />
               {errors.description.length > 0 && <div className="error-container"><span className='error'>{errors.description}</span></div>}
               <br />
-              {/* <input className="form-input" type="file" onChange={this.setImage} />
-              <br /> */}
               <div className="button-holder">
                 <button className="operational-button" type="submit" onClick={this.handleSubmit} disabled={isSubmissionDisabled}>Add</button>
                 <button className="operational-button" type="submit" onClick={this.cancelAddingProduct}>Cancel</button>

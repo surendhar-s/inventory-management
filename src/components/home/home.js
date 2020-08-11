@@ -16,6 +16,7 @@ class Home extends Component {
     }
   }
   componentDidMount = () => {
+    // console.log(localStorage.getItem("userId"));
     if (localStorage.getItem("userId") === null) {
       this.props.history.replace("/login")
     }

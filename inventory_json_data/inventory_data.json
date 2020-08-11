@@ -19,29 +19,18 @@
       "productName": "Hello",
       "productStock": "56",
       "productPrice": "2425",
-      "productDescription": "ajkdfl",
+      "productDescription": "kjaha gfhaf",
       "productAddedOn": "2020-08-08T13:26:58.498Z",
       "productUpdatedOn": "2020-08-09T04:54:17.848Z",
       "productUserId": "1",
       "id": 2
     },
     {
-      "productCategory": "3",
-      "productName": "Hello World",
-      "productStock": "23",
-      "productPrice": "321",
-      "productDescription": "Sample product to demo",
-      "productAddedOn": "2020-08-08T15:49:30.022Z",
-      "productUpdatedOn": null,
-      "productUserId": "1",
-      "id": 3
-    },
-    {
       "productCategory": "2",
       "productName": "Sample Product",
       "productStock": "50",
       "productPrice": "2855",
-      "productDescription": "asdf",
+      "productDescription": "aakjd'aj ajajg",
       "productAddedOn": "2020-08-09T03:52:16.194Z",
       "productUpdatedOn": "2020-08-09T04:01:37.225Z",
       "productUserId": "1",
@@ -52,11 +41,22 @@
       "productName": "iPhone",
       "productStock": "59",
       "productPrice": "90999",
-      "productDescription": "Apple",
+      "productDescription": "Apple product",
       "productAddedOn": "2020-08-09T04:54:46.245Z",
       "productUpdatedOn": null,
       "productUserId": "1",
       "id": 5
+    },
+    {
+      "productCategory": "4",
+      "productName": "Sample product",
+      "productStock": "3",
+      "productPrice": "5215",
+      "productDescription": "Hello world",
+      "productAddedOn": "2020-08-10T06:34:02.951Z",
+      "productUpdatedOn": "2020-08-10T06:34:46.499Z",
+      "productUserId": "1",
+      "id": 6
     }
   ],
   "category": [
