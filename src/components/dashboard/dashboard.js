@@ -18,6 +18,12 @@ class Dashboard extends Component {
       title: {
         text: "Products Vs Category"
       },
+      axisX: {
+        title: "Category"
+      },
+      axisY: {
+        title: "Product in stock"
+      },
       data: [{
         type: "bar",
         indexLabel: "{label}: {y}",
@@ -38,7 +44,8 @@ class Dashboard extends Component {
         return 0
       })
       for (var i = 0; i < categoryName.length; i++) {
-        this.chartOption.data[0].dataPoints.push({ label: categoryName[i], y: productInStock[i] })
+        if (productInStock[i] !== 0)
+          this.chartOption.data[0].dataPoints.push({ label: categoryName[i], y: productInStock[i] })
       }
       // console.log(this.chartOption);
       this.setState({

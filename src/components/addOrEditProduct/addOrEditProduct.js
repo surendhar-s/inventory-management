@@ -148,7 +148,7 @@ class AddOrEditProduct extends Component {
           addNewCategoryFailed: false,
           addNewCategoryEnabled: false,
           newCategory: "",
-          errors: ''
+          errors: errors
         })
       }
     }
