@@ -12,7 +12,8 @@ class Home extends Component {
     this.state = {
       isDashboardSelected: true,
       isListAllSelected: false,
-      isAddProductSelected: false
+      isAddProductSelected: false,
+      forceUpadeEnabledForListAll: false
     }
   }
   componentDidMount = () => {
@@ -25,7 +26,8 @@ class Home extends Component {
     this.setState({
       isDashboardSelected: false,
       isListAllSelected: true,
-      isAddProductSelected: false
+      isAddProductSelected: false,
+      forceUpadeEnabledForListAll: true
     })
   }
   render() {
@@ -34,13 +36,13 @@ class Home extends Component {
         <Header />
         <div className="main-container">
           <div className="home-button-container">
-            <button className="button home-button" onClick={() => this.setState({ isDashboardSelected: true, isListAllSelected: false, isAddProductSelected: false })}>Dashboard</button>
-            <button className="button home-button" onClick={() => this.setState({ isDashboardSelected: false, isListAllSelected: true, isAddProductSelected: false })}>ListAll</button>
-            <button className="button home-button" onClick={() => this.setState({ isDashboardSelected: false, isListAllSelected: false, isAddProductSelected: true })}>Add Product</button>
+            <button className="button home-button" onClick={() => this.setState({ isDashboardSelected: true, isListAllSelected: false, isAddProductSelected: false, forceUpadeEnabledForListAll: false })}>Dashboard</button>
+            <button className="button home-button" onClick={() => this.setState({ isDashboardSelected: false, isListAllSelected: true, isAddProductSelected: false, forceUpadeEnabledForListAll: false })}>ListAll</button>
+            <button className="button home-button" onClick={() => this.setState({ isDashboardSelected: false, isListAllSelected: false, isAddProductSelected: true, forceUpadeEnabledForListAll: false })}>Add Product</button>
           </div>
           {this.state.isDashboardSelected ? <Dashboard /> : null}
-          {this.state.isListAllSelected ? <ListAll /> : null}
-          {this.state.isAddProductSelected ? <AddOrEditProduct callBackFunctionToHome={this.gotCallBackFromAddProduct}/> : null}
+          {this.state.isListAllSelected ? <ListAll forceUpadeEnabled={this.state.forceUpadeEnabledForListAll} /> : null}
+          {this.state.isAddProductSelected ? <AddOrEditProduct callBackFunctionToHome={this.gotCallBackFromAddProduct} /> : null}
         </div>
         <Footer />
       </div>

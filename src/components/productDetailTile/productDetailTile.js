@@ -199,6 +199,12 @@ class ProductDetailTile extends Component {
                   </tr>
                   <tr>
                     <td>
+                      <h3>Category:</h3>
+                    </td>
+                    <td>{this.state.productCategoryName}</td>
+                  </tr>
+                  <tr>
+                    <td>
                       <h3>Price:</h3>
                     </td>
                     <td>{new Intl.NumberFormat('en-IN', {
@@ -208,15 +214,18 @@ class ProductDetailTile extends Component {
                   </tr>
                   <tr>
                     <td>
-                      <h3>Category:</h3>
-                    </td>
-                    <td>{this.state.productCategoryName}</td>
-                  </tr>
-                  <tr>
-                    <td>
                       <h3>Quantity:</h3>
                     </td>
                     <td>{this.state.productStock}</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <h3>Inventory Value:</h3>
+                    </td>
+                    <td>{new Intl.NumberFormat('en-IN', {
+                      style: 'currency',
+                      currency: 'INR'
+                    }).format(parseFloat(this.state.productPrice) * parseFloat(this.state.productStock))}</td>
                   </tr>
                   <tr>
                     <td>

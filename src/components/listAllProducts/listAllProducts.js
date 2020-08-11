@@ -3,6 +3,7 @@ import Axios from 'axios';
 import { Link } from 'react-router-dom';
 import LoadingOverlay from 'react-loading-overlay'
 import './listAllProducts.css'
+import moment from 'moment';
 
 class ListAllProducts extends Component {
   constructor(props) {
@@ -12,12 +13,14 @@ class ListAllProducts extends Component {
       searchValue: "",
       initialData: [],
       categoryList: [],
+      filteredDataByCategory: [],
       sortBy: "byName",
       filterBy: "All-Cat",
       isDataLoading: false
     }
   }
   componentDidMount = async () => {
+    console.log("componentDidMount")
     this.setState({
       isDataLoading: true
     })
@@ -39,6 +42,7 @@ class ListAllProducts extends Component {
         productsList: tempList,
         initialData: tempList,
         categoryList: categoryList.data,
+        filteredDataByCategory: tempList,
         isDataLoading: false
       })
     })
@@ -66,7 +70,7 @@ class ListAllProducts extends Component {
     let inputValue = e.target.value
     if (inputValue === "") {
       this.setState({
-        productsList: this.state.initialData
+        productsList: this.state.filteredDataByCategory
       })
     }
     else {
@@ -105,6 +109,14 @@ class ListAllProducts extends Component {
         tempList.sort((a, b) => parseInt(a.productStock) - parseInt(b.productStock)
         )
       }
+      else if (this.state.sortBy === "byAddedOn") {
+        let tempList = this.state.productsList
+        tempList.sort((a, b) => moment(a.productAddedOn) - moment(b.productAddedOn))
+      }
+      else if (this.state.sortBy === "byInventoryValue") {
+        let tempList = this.state.productsList
+        tempList.sort((a, b) => (parseFloat(a.productPrice) * parseFloat(a.productStock)) - (parseFloat(b.productPrice) * parseFloat(b.productStock)))
+      }
       this.setState({
         productsList: tempList,
         isDataLoading: false
@@ -119,14 +131,16 @@ class ListAllProducts extends Component {
     if (filterBy === "All-Cat") {
       this.setState({
         productsList: this.state.initialData,
-        isDataLoading: false
+        filteredDataByCategory: this.state.initialData,
+        isDataLoading: false,
       })
     }
     else {
       let tempList = this.state.initialData.filter(data => parseInt(data.productCategory) === parseInt(filterBy))
       this.setState({
         productsList: tempList,
-        isDataLoading: false
+        filteredDataByCategory: tempList,
+        isDataLoading: false,
       })
     }
   }
@@ -141,7 +155,9 @@ class ListAllProducts extends Component {
             <option disabled>Sort By</option>
             <option value="byName" defaultChecked>Name</option>
             <option value="byPrice">Price</option>
+            <option value="byInventoryValue">Inventory Value</option>
             <option value="byAvailability">Availabiliy</option>
+            <option value="byAddedOn">Added on</option>
           </select>
           <select className="sort-by" onChange={this.filterDataProductByCategory}>
             <option disabled>Filter by category</option>
@@ -166,6 +182,7 @@ class ListAllProducts extends Component {
                       <th className="product-table-th">Category</th>
                       <th className="product-table-th">In-Stock</th>
                       <th className="product-table-th">Price per Unit</th>
+                      <th className="product-table-th">Inventory value</th>
                       <th className="product-table-th" colSpan="2">Action</th>
                     </tr>
                   </thead>
@@ -180,6 +197,11 @@ class ListAllProducts extends Component {
                             style: 'currency',
                             currency: 'INR'
                           }).format(data.productPrice)
+                          }</td>
+                          <td className="product-table-td">{new Intl.NumberFormat('en-IN', {
+                            style: 'currency',
+                            currency: 'INR'
+                          }).format(parseFloat(data.productPrice) * parseFloat(data.productStock))
                           }</td>
                           <td className="product-table-td"><Link to={{
                             pathname: "/productDetail",

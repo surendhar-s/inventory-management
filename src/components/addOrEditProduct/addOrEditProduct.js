@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './addOrEditProduct.css'
 import Axios from 'axios';
 import moment from 'moment'
+import LoadingOverlay from 'react-loading-overlay';
 
 class AddOrEditProduct extends Component {
   constructor(props) {
@@ -17,6 +18,7 @@ class AddOrEditProduct extends Component {
       newCategory: "",
       addNewCategoryEnabled: false,
       addNewCategoryFailed: false,
+      isDataLoading: false,
       errors: {
         name: ' ',
         quantity: ' ',
@@ -80,10 +82,14 @@ class AddOrEditProduct extends Component {
   fetchCategory = async () => {
     let categoryList = await Axios.get("http://localhost:3001/category")
     this.setState({
-      categoryList: categoryList.data
+      categoryList: categoryList.data,
+      category: categoryList.data[0].id
     })
   }
   handleSubmit = () => {
+    this.setState({
+      isDataLoading: true
+    })
     Axios.post("http://localhost:3001/products", {
       productCategory: this.state.category,
       productName: this.state.name,
@@ -94,7 +100,13 @@ class AddOrEditProduct extends Component {
       productUpdatedOn: null,
       productUserId: localStorage.getItem("userId")
     })
-    this.props.callBackFunctionToHome()
+    setTimeout(() => {
+      this.setState({
+        isDataLoading: false
+      }, () => {
+        this.props.callBackFunctionToHome()
+      })
+    }, 1000)
   }
   cancelAddingProduct = () => {
     this.props.callBackFunctionToHome()
@@ -159,48 +171,51 @@ class AddOrEditProduct extends Component {
     return (
       <div>
         <hr />
-        {/* <Header /> */}
-        {/* <div className="main-contianer"> */}
         <div className="add-product-container">
           <div className="con">
             <header className="head-form login-header">
-              <p>Add or Edit Product details</p>
+              <p>Add Product Here</p>
             </header>
             <br />
             <div>
-              <input className="form-input" type="text" placeholder="Name" name="name" onChange={this.setNameValue} required />
-              <br />
-              {errors.name.length > 0 && <div className="error-container"><span className='error'>{errors.name}</span></div>}
-              <input className="form-input" type="number" placeholder="Quantity" name="quantity" onChange={this.setQuantity} required />
-              <br />
-              {errors.quantity.length > 0 && <div className="error-container"><span className='error'>{errors.quantity}</span></div>}
-              <input className="form-input" type="number" placeholder="Price per unit" name="price" onChange={this.setPricePerUnit} required />
-              <br />
-              {errors.price.length > 0 && <div className="error-container"><span className='error'>{errors.price}</span></div>}
-              <select className="select-option" onChange={this.setCategory}>
-                <option disabled>---Select category---</option>
+              <LoadingOverlay
+                active={this.state.isDataLoading}
+                spinner
+                text="Please wait!!!" >
+                <input className="form-input" type="text" placeholder="Name" name="name" onChange={this.setNameValue} required />
+                <br />
+                {errors.name.length > 0 && <div className="error-container"><span className='error'>{errors.name}</span></div>}
+                <input className="form-input" type="number" placeholder="Quantity" name="quantity" onChange={this.setQuantity} required />
+                <br />
+                {errors.quantity.length > 0 && <div className="error-container"><span className='error'>{errors.quantity}</span></div>}
+                <input className="form-input" type="number" placeholder="Price per unit" name="price" onChange={this.setPricePerUnit} required />
+                <br />
+                {errors.price.length > 0 && <div className="error-container"><span className='error'>{errors.price}</span></div>}
+                <select className="select-option" onChange={this.setCategory}>
+                  <option disabled>---Select category---</option>
+                  {
+                    this.state.categoryList.map((category) => {
+                      return <option key={category.id} value={category.id}>{category.categoryName}</option>
+                    })
+                  }
+                </select>
+                <br />
+                <button style={{ display: "block", margin: "auto" }} onClick={this.toggleAddingCategory}>Click to add new category</button>
                 {
-                  this.state.categoryList.map(category => {
-                    return <option key={category.id} value={category.id}>{category.categoryName}</option>
-                  })
+                  this.state.addNewCategoryEnabled ? <div>
+                    <input className="form-input" type="text" name="newCategory" placeholder="New Category" onChange={this.setNewCategoryValue} />
+                    {errors.newCategory.length > 0 && <div className="error-container"><span className='error'>{errors.newCategory}</span></div>}
+                    <button className="button" onClick={this.addNewCategory} style={{ width: "unset", background: "rgb(181 147 147)", margin: "0px auto 20px" }}>Add Category</button>
+                  </div> : null
                 }
-              </select>
-              <br />
-              <button style={{ display: "block", margin: "auto" }} onClick={this.toggleAddingCategory}>Click to add new category</button>
-              {
-                this.state.addNewCategoryEnabled ? <div>
-                  <input className="form-input" type="text" name="newCategory" placeholder="New Category" onChange={this.setNewCategoryValue} />
-                  {errors.newCategory.length > 0 && <div className="error-container"><span className='error'>{errors.newCategory}</span></div>}
-                  <button className="button" onClick={this.addNewCategory} style={{ width: "unset", background: "rgb(181 147 147)", margin: "0px auto 20px" }}>Add Category</button>
-                </div> : null
-              }
-              <input className="form-input" type="text" placeholder="Description" name="description" onChange={this.setDescription} />
-              {errors.description.length > 0 && <div className="error-container"><span className='error'>{errors.description}</span></div>}
-              <br />
-              <div className="button-holder">
-                <button className="operational-button" type="submit" onClick={this.handleSubmit} disabled={isSubmissionDisabled}>Add</button>
-                <button className="operational-button" type="submit" onClick={this.cancelAddingProduct}>Cancel</button>
-              </div>
+                <input className="form-input" type="text" placeholder="Description" name="description" onChange={this.setDescription} />
+                {errors.description.length > 0 && <div className="error-container"><span className='error'>{errors.description}</span></div>}
+                <br />
+                <div className="button-holder">
+                  <button className="operational-button" type="submit" onClick={this.handleSubmit} disabled={isSubmissionDisabled}>Add</button>
+                  <button className="operational-button" type="submit" onClick={this.cancelAddingProduct}>Cancel</button>
+                </div>
+              </LoadingOverlay>
             </div>
           </div>
         </div>

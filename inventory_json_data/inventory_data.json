@@ -17,11 +17,11 @@
     {
       "productCategory": "3",
       "productName": "Hello",
-      "productStock": "56",
+      "productStock": "57",
       "productPrice": "2425",
       "productDescription": "kjaha gfhaf",
       "productAddedOn": "2020-08-08T13:26:58.498Z",
-      "productUpdatedOn": "2020-08-09T04:54:17.848Z",
+      "productUpdatedOn": "2020-08-11T16:10:07.045Z",
       "productUserId": "1",
       "id": 2
     },
@@ -57,6 +57,83 @@
       "productUpdatedOn": "2020-08-10T06:34:46.499Z",
       "productUserId": "1",
       "id": 6
+    },
+    {
+      "productCategory": "4",
+      "productName": "Test Product",
+      "productStock": "4",
+      "productPrice": "222",
+      "productDescription": "Hello Sample",
+      "productAddedOn": "2020-08-11T16:17:47.902Z",
+      "productUpdatedOn": null,
+      "productUserId": "1",
+      "id": 7
+    },
+    {
+      "productCategory": "1",
+      "productName": "Test Product 2",
+      "productStock": "23",
+      "productPrice": "213",
+      "productDescription": "Hello World Sample",
+      "productAddedOn": "2020-08-11T16:32:09.303Z",
+      "productUpdatedOn": "2020-08-11T16:36:29.840Z",
+      "productUserId": "1",
+      "id": 8
+    },
+    {
+      "productCategory": "3",
+      "productName": "Test Product 3",
+      "productStock": "10",
+      "productPrice": "654",
+      "productDescription": "Hello sample 3",
+      "productAddedOn": "2020-08-11T16:36:06.764Z",
+      "productUpdatedOn": null,
+      "productUserId": "1",
+      "id": 9
+    },
+    {
+      "productCategory": "2",
+      "productName": "Test Product 4",
+      "productStock": "5",
+      "productPrice": "21",
+      "productDescription": "Hello Sample product",
+      "productAddedOn": "2020-08-11T16:48:38.026Z",
+      "productUpdatedOn": null,
+      "productUserId": "1",
+      "id": 10
+    },
+    {
+      "productCategory": "5",
+      "productName": "Test Product 5",
+      "productStock": "50",
+      "productPrice": "23",
+      "productDescription": "Hello sample product",
+      "productAddedOn": "2020-08-11T16:49:37.276Z",
+      "productUpdatedOn": null,
+      "productUserId": "1",
+      "id": 11
+    },
+    {
+      "productCategory": 1,
+      "productName": "Test Product 6",
+      "productStock": "14",
+      "productPrice": "345",
+      "productDescription": "Hello Sample product",
+      "productAddedOn": "2020-08-11T17:00:18.174Z",
+      "productUpdatedOn": null,
+      "productUserId": "1",
+      "id": 12
+    },
+    {
+      "productCategory": "4",
+      "productName": "Test Product 7",
+      "productStock": "7",
+      "productPrice": "249",
+      "productDescription": "Hello sample 7",
+      "productAddedOn": "2020-08-11T17:00:55.922Z",
+      "productUpdatedOn": null,
+      "productUserId": "1",
+      "id": 13
     }
   ],
   "category": [
@@ -75,6 +152,10 @@
     {
       "id": 4,
       "categoryName": "Bike Accessories"
+    },
+    {
+      "categoryName": "Essesntials",
+      "id": 5
     }
   ]
 }
