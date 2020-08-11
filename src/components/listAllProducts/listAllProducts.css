@@ -40,13 +40,23 @@
   height: 25px;
 }
 
+.sort-button {
+  background-color: #e8216bfc;
+  padding: 0 3px;
+  border-radius: 5px;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s linear;
+}
+
 @media screen and (max-width: 550px) {
   .search-bar {
     width: 100px;
   }
 }
 
-@media screen and (max-width: 655px) {
+@media screen and (max-width: 730px) {
   .sort-by {
     float: unset;
   }

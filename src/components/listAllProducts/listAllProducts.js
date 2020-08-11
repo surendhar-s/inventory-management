@@ -16,11 +16,11 @@ class ListAllProducts extends Component {
       filteredDataByCategory: [],
       sortBy: "byName",
       filterBy: "All-Cat",
-      isDataLoading: false
+      isDataLoading: false,
+      sortOrder: "ASC"
     }
   }
   componentDidMount = async () => {
-    console.log("componentDidMount")
     this.setState({
       isDataLoading: true
     })
@@ -44,6 +44,13 @@ class ListAllProducts extends Component {
         categoryList: categoryList.data,
         filteredDataByCategory: tempList,
         isDataLoading: false
+      }, () => {
+        let e = {
+          target: {
+            value: "byName"
+          }
+        }
+        this.sortData(e)
       })
     })
   }
@@ -94,28 +101,26 @@ class ListAllProducts extends Component {
       isDataLoading: true
     }, () => {
       let tempList = this.state.productsList
+      let sortOrder = this.state.sortOrder === "ASC" ? true : false
       if (this.state.sortBy === "byName") {
         let tempList = this.state.productsList
-        tempList.sort((a, b) => a.productName.localeCompare(b.productName)
-        )
+        tempList.sort((a, b) => sortOrder ? a.productName.localeCompare(b.productName) : b.productName.localeCompare(a.productName))
       }
       else if (this.state.sortBy === "byPrice") {
         let tempList = this.state.productsList
-        tempList.sort((a, b) => parseFloat(a.productPrice) - parseFloat(b.productPrice)
-        )
+        tempList.sort((a, b) => sortOrder ? parseFloat(a.productPrice) - parseFloat(b.productPrice) : parseFloat(b.productPrice) - parseFloat(a.productPrice))
       }
       else if (this.state.sortBy === "byAvailability") {
         let tempList = this.state.productsList
-        tempList.sort((a, b) => parseInt(a.productStock) - parseInt(b.productStock)
-        )
+        tempList.sort((a, b) => sortOrder ? parseInt(a.productStock) - parseInt(b.productStock) : parseInt(b.productStock) - parseInt(a.productStock))
       }
       else if (this.state.sortBy === "byAddedOn") {
         let tempList = this.state.productsList
-        tempList.sort((a, b) => moment(a.productAddedOn) - moment(b.productAddedOn))
+        tempList.sort((a, b) => sortOrder ? moment(a.productAddedOn) - moment(b.productAddedOn) : moment(b.productAddedOn) - moment(a.productAddedOn))
       }
       else if (this.state.sortBy === "byInventoryValue") {
         let tempList = this.state.productsList
-        tempList.sort((a, b) => (parseFloat(a.productPrice) * parseFloat(a.productStock)) - (parseFloat(b.productPrice) * parseFloat(b.productStock)))
+        tempList.sort((a, b) => sortOrder ? (parseFloat(a.productPrice) * parseFloat(a.productStock)) - (parseFloat(b.productPrice) * parseFloat(b.productStock)) : (parseFloat(b.productPrice) * parseFloat(b.productStock)) - (parseFloat(a.productPrice) * parseFloat(a.productStock)))
       }
       this.setState({
         productsList: tempList,
@@ -144,6 +149,18 @@ class ListAllProducts extends Component {
       })
     }
   }
+  toggleAscendingOrDecending = () => {
+    this.setState({
+      sortOrder: this.state.sortOrder === "ASC" ? "DSC" : "ASC"
+    }, () => {
+      let e = {
+        target: {
+          value: this.state.sortBy
+        }
+      }
+      this.sortData(e)
+    })
+  }
   render() {
     return (
       <div>
@@ -151,6 +168,7 @@ class ListAllProducts extends Component {
           <h3>Product List</h3>
           <hr /><br />
           <input className="search-bar" placeholder="Search!!" type="search" onChange={this.searchData} />
+          <button className="sort-by sort-button" onClick={this.toggleAscendingOrDecending}>{this.state.sortOrder}</button>
           <select onChange={this.sortData} className="sort-by">
             <option disabled>Sort By</option>
             <option value="byName" defaultChecked>Name</option>
