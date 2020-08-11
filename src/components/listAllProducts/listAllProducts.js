@@ -152,7 +152,11 @@ class ListAllProducts extends Component {
                         <td className="product-table-td">{data.productName}</td>
                         <td className="product-table-td">{data.productCategoryName}</td>
                         <td className="product-table-td">{data.productStock}</td>
-                        <td className="product-table-td">{data.productPrice}</td>
+                        <td className="product-table-td">{new Intl.NumberFormat('en-IN', {
+                          style: 'currency',
+                          currency: 'INR'
+                        }).format(data.productPrice)
+                        }</td>
                         <td className="product-table-td"><Link to={{
                           pathname: "/productDetail",
                           state: { productData: data }

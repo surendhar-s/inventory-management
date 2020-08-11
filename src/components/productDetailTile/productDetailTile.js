@@ -201,7 +201,10 @@ class ProductDetailTile extends Component {
                     <td>
                       <h3>Price:</h3>
                     </td>
-                    <td>{this.state.productPrice}</td>
+                    <td>{new Intl.NumberFormat('en-IN', {
+                      style: 'currency',
+                      currency: 'INR'
+                    }).format(this.state.productPrice)}</td>
                   </tr>
                   <tr>
                     <td>
@@ -219,7 +222,7 @@ class ProductDetailTile extends Component {
                     <td>
                       <h3>Description</h3>
                     </td>
-                    <td>{this.state.productDescription}</td>
+                    <td style={{ lineHeight: "1.9rem" }}>{this.state.productDescription}</td>
                   </tr>
                   <tr>
                     <td>
