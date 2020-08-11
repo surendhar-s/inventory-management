@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Axios from 'axios';
 import canvasJsReact from '../../canvasJs/canvasjs.react'
+import LoadingOverlay from 'react-loading-overlay'
 var CanvasJsChart = canvasJsReact.CanvasJSChart
 
 class Dashboard extends Component {
@@ -9,7 +10,8 @@ class Dashboard extends Component {
     super(props)
     this.state = {
       productList: [],
-      chartOption: []
+      chartOption: [],
+      isDataLoading: false
     }
     this.chartOption = {
       animationEnabled: true,
@@ -32,6 +34,9 @@ class Dashboard extends Component {
     }
   }
   componentDidMount = async () => {
+    this.setState({
+      isDataLoading: true
+    })
     let produtData = await Axios.get("http://localhost:3001/products?productUserId=" + localStorage.getItem("userId"))
     let categoryList = await Axios.get("http://localhost:3001/category")
     if (produtData.data.length !== 0) {
@@ -52,12 +57,21 @@ class Dashboard extends Component {
         chartOption: this.chartOption
       })
     }
+    this.setState({
+      isDataLoading: false
+    })
   }
   render() {
     return (
       <div>
         <hr />
-        {this.chartOption.data[0].dataPoints.length !== 0 ? <div style={{ padding: "15px" }}><CanvasJsChart options={this.state.chartOption} /></div> : <h3>Add product in inventory</h3>}
+        <LoadingOverlay
+          active={this.state.isDataLoading}
+          spinner
+          text='Loading your dashboard...'
+        >
+          {this.chartOption.data[0].dataPoints.length !== 0 ? <div style={{ padding: "15px" }}><CanvasJsChart options={this.state.chartOption} /></div> : <h3 style={{height: "100px", padding: "15px", textAlign: "center"}}>No product in inventory found, please add!!</h3>}
+        </LoadingOverlay>
       </div>
     );
   }
