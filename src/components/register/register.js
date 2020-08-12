@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import './register.css';
 import Axios from 'axios';
 import bcrypt from 'bcryptjs'
+import LoadingOverlay from 'react-loading-overlay'
 
 class Register extends Component {
 
@@ -16,7 +17,8 @@ class Register extends Component {
             isValidPassword: false,
             isValidEmail: false,
             isNewEmail: false,
-            isAllFieldFilled: false
+            isAllFieldFilled: false,
+            isDataLoading: false
         }
     }
 
@@ -72,6 +74,9 @@ class Register extends Component {
     }
 
     handleSubmit = async () => {
+        this.setState({
+            isDataLoading: true
+        })
         this.flag = true
         if (await this.checkFileds() && this.state.isNewEmail) {
             const details = {
@@ -82,41 +87,54 @@ class Register extends Component {
             }
             await Axios.post("http://localhost:3001/userDb", details)
             // console.log(data);
-            this.props.history.replace("/login");
+            this.setState({
+                isDataLoading: false
+            }, () => {
+                this.props.history.replace("/login");
+            })
         }
+        this.setState({
+            isDataLoading: false
+        })
     }
 
     render() {
         return (
             <div className="form-container">
-                <div className="con">
-                    <header className="head-form login-header">
-                        <h2>Sign up</h2>
-                        <p>Sign up here using mail ID</p>
-                    </header>
-                    <br />
-                    <div>
-                        <input className="form-input" type="text" placeholder="Name*" onChange={this.setNameValue} required />
+                <LoadingOverlay
+                    active={this.state.isDataLoading}
+                    spinner
+                    text="Please wait..."
+                >
+                    <div className="con">
+                        <header className="head-form login-header">
+                            <h2>Sign up</h2>
+                            <p>Sign up here using mail ID</p>
+                        </header>
                         <br />
-                        <input className="form-input" type="email" placeholder="Email*" onChange={this.setEmailValue} required />
-                        <br />
-                        <input className="form-input" type="password" placeholder="Password*" id="pwd" name="password" onChange={this.setPasswordValue} required />
-                        <br />
-                        <button className="button log-in" type="submit" onClick={this.handleSubmit}> Sign up </button>
+                        <div>
+                            <input className="form-input" type="text" placeholder="Name*" onChange={this.setNameValue} required />
+                            <br />
+                            <input className="form-input" type="email" placeholder="Email*" onChange={this.setEmailValue} required />
+                            <br />
+                            <input className="form-input" type="password" placeholder="Password*" id="pwd" name="password" onChange={this.setPasswordValue} required />
+                            <br />
+                            <button className="button log-in" type="submit" onClick={this.handleSubmit}> Sign up </button>
+                        </div>
+                        <div>
+                            {this.flag ? <div>{this.state.isAllFieldFilled ? <div>
+                                {this.state.isValidPassword ? <div>
+                                    {this.state.isValidEmail ? <div>
+                                        {this.state.isNewEmail ? <div></div> : <div><span style={{ color: "red" }}>Email already registered.</span></div>}
+                                    </div> : <div><span style={{ color: "red" }}>Please enter valid email</span></div>}
+                                </div> : <div><span style={{ color: "red" }}>Password should have a minimum of 5 characters</span></div>}
+                            </div> : <div><span style={{ color: "red" }}>Please fill all mandatory fields</span></div>}</div> : <div></div>}
+                        </div>
+                        <div>
+                            <Link style={{ textDecoration: "none", color: "black" }} to={{ pathname: "/login" }} ><button className="button sign-up">Login</button></Link>
+                        </div>
                     </div>
-                    <div>
-                        {this.flag ? <div>{this.state.isAllFieldFilled ? <div>
-                            {this.state.isValidPassword ? <div>
-                                {this.state.isValidEmail ? <div>
-                                    {this.state.isNewEmail ? <div></div> : <div><span style={{ color: "red" }}>Email already registered.</span></div>}
-                                </div> : <div><span style={{ color: "red" }}>Please enter valid email</span></div>}
-                            </div> : <div><span style={{ color: "red" }}>Password should have a minimum of 5 characters</span></div>}
-                        </div> : <div><span style={{ color: "red" }}>Please fill all mandatory fields</span></div>}</div> : <div></div>}
-                    </div>
-                    <div>
-                        <Link style={{ textDecoration: "none", color: "black" }} to={{ pathname: "/login" }} ><button className="button sign-up">Login</button></Link>
-                    </div>
-                </div>
+                </LoadingOverlay>
             </div>
         );
     }
