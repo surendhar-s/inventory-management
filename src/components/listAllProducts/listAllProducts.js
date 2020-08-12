@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import LoadingOverlay from 'react-loading-overlay'
 import './listAllProducts.css'
 import moment from 'moment';
+import { TablePagination } from 'react-pagination-table'
 
 class ListAllProducts extends Component {
   constructor(props) {
@@ -17,7 +18,8 @@ class ListAllProducts extends Component {
       sortBy: "byName",
       filterBy: "All-Cat",
       isDataLoading: false,
-      sortOrder: "ASC"
+      sortOrder: "ASC",
+      itemPerPage: 5
     }
   }
   componentDidMount = async () => {
@@ -161,7 +163,36 @@ class ListAllProducts extends Component {
       this.sortData(e)
     })
   }
+  changeItemPerPage = (e) => {
+    this.setState({
+      itemPerPage: e.target.value
+    })
+  }
   render() {
+    let tableHeader = ["Name", "Category", "In-Stock", "Price Per Unit", "Inventory value", "Action", ""]
+    let tableData = []
+    this.state.productsList.map(data => {
+      tableData.push({
+        name: data.productName,
+        category: data.productCategoryName,
+        stock: data.productStock,
+        price: new Intl.NumberFormat('en-IN', {
+          style: 'currency',
+          currency: 'INR'
+        }).format(data.productPrice),
+        inventory: new Intl.NumberFormat('en-IN', {
+          style: 'currency',
+          currency: 'INR'
+        }).format(parseFloat(data.productPrice) * parseFloat(data.productStock)),
+        viewAction: <Link to={{
+          pathname: "/productDetail",
+          state: { productData: data }
+        }}
+          style={{ textDecoration: "none" }}><button className="button view-button home-button">View</button></Link>,
+        deleteAction: <button className="button delete-button home-button" onClick={() => this.deleteProduct(data.id)}>Delete</button>
+      })
+      return 0
+    })
     return (
       <div>
         <div style={{ padding: "10px", margin: "0px 80px" }}>
@@ -193,45 +224,63 @@ class ListAllProducts extends Component {
               text='Loading your products...'
             >
               {
-                this.state.productsList.length === 0 ? <h3><span>No product in inventory</span></h3> : <table className="product-table">
-                  <thead>
-                    <tr className="product-table-tr" style={{ background: "#d8d8d861" }}>
-                      <th className="product-table-th">Name</th>
-                      <th className="product-table-th">Category</th>
-                      <th className="product-table-th">In-Stock</th>
-                      <th className="product-table-th">Price per Unit</th>
-                      <th className="product-table-th">Inventory value</th>
-                      <th className="product-table-th" colSpan="2">Action</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {this.state.productsList.map(data => {
-                      return (
-                        <tr className="product-table-tr" key={data.id}>
-                          <td className="product-table-td">{data.productName}</td>
-                          <td className="product-table-td">{data.productCategoryName}</td>
-                          <td className="product-table-td">{data.productStock}</td>
-                          <td className="product-table-td">{new Intl.NumberFormat('en-IN', {
-                            style: 'currency',
-                            currency: 'INR'
-                          }).format(data.productPrice)
-                          }</td>
-                          <td className="product-table-td">{new Intl.NumberFormat('en-IN', {
-                            style: 'currency',
-                            currency: 'INR'
-                          }).format(parseFloat(data.productPrice) * parseFloat(data.productStock))
-                          }</td>
-                          <td className="product-table-td"><Link to={{
-                            pathname: "/productDetail",
-                            state: { productData: data }
-                          }}
-                            style={{ textDecoration: "none" }}><button className="button view-button home-button">View</button></Link></td>
-                          <td><button className="button delete-button home-button" onClick={() => this.deleteProduct(data.id)}>Delete</button></td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
+                this.state.productsList.length === 0 ? <h3><span>No product in inventory</span></h3> :
+                  // <table className="product-table">
+                  //   <thead>
+                  //     <tr className="product-table-tr" style={{ background: "#d8d8d861" }}>
+                  //       <th className="product-table-th">Name</th>
+                  //       <th className="product-table-th">Category</th>
+                  //       <th className="product-table-th">In-Stock</th>
+                  //       <th className="product-table-th">Price per Unit</th>
+                  //       <th className="product-table-th">Inventory value</th>
+                  //       <th className="product-table-th" colSpan="2">Action</th>
+                  //     </tr>
+                  //   </thead>
+                  //   <tbody>
+                  //     {this.state.productsList.map(data => {
+                  //       return (
+                  //         <tr className="product-table-tr" key={data.id}>
+                  //           <td className="product-table-td">{data.productName}</td>
+                  //           <td className="product-table-td">{data.productCategoryName}</td>
+                  //           <td className="product-table-td">{data.productStock}</td>
+                  //           <td className="product-table-td">{new Intl.NumberFormat('en-IN', {
+                  //             style: 'currency',
+                  //             currency: 'INR'
+                  //           }).format(data.productPrice)
+                  //           }</td>
+                  //           <td className="product-table-td">{new Intl.NumberFormat('en-IN', {
+                  //             style: 'currency',
+                  //             currency: 'INR'
+                  //           }).format(parseFloat(data.productPrice) * parseFloat(data.productStock))
+                  //           }</td>
+                  //           <td className="product-table-td"><Link to={{
+                  //             pathname: "/productDetail",
+                  //             state: { productData: data }
+                  //           }}
+                  //             style={{ textDecoration: "none" }}><button className="button view-button home-button">View</button></Link></td>
+                  //           <td><button className="button delete-button home-button" onClick={() => this.deleteProduct(data.id)}>Delete</button></td>
+                  //         </tr>
+                  //       );
+                  //     })}
+                  //   </tbody>
+                  // </table>
+                  <React.Fragment>
+                    <TablePagination
+                      headers={tableHeader}
+                      data={tableData}
+                      columns="name.category.stock.price.inventory.viewAction.deleteAction"
+                      perPageItemCount={this.state.itemPerPage}
+                      totalCount={tableData.length}
+                    />{tableData.length > 5 ?
+                      <select onChange={this.changeItemPerPage} style={{ display: "block", margin: "auto" }}>
+                        <option value={5} defaultChecked>5</option>
+                        <option value={10}>10</option>
+                        <option value={20}>20</option>
+                        <option value={50}>50</option>
+                      </select>
+                      : null
+                    }
+                  </React.Fragment>
               }
             </LoadingOverlay>
           </div>

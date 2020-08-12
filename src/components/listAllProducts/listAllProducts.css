@@ -6,6 +6,8 @@
   background-color: #ff7b7b99;
   margin: unset !important;
 }
+
+/* CSS for normal table */
 .product-table {
   border-collapse: collapse;
   width: 100%;
@@ -31,6 +33,41 @@
   max-height: 600px;
 }
 
+/* CSS for ReactPaginate table */
+.table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.table > thead > tr > th,
+.table > tbody > tr > td {
+  text-align: left;
+  padding: 8px;
+}
+
+.table > thead > tr > th:nth-last-child(2) {
+  text-align: right;
+}
+
+.table-header {
+  background-color: #ff161645;
+}
+
+.table > tbody > tr:nth-child(even) {
+  background-color: #f2f2f245;
+}
+
+.table > tbody > tbody > tr:nth-child(odd) {
+  background-color: #736e6e45;
+}
+
+.pagination-status__item {
+  display: inline;
+}
+.pagination-status {
+  text-align: center;
+}
+/* ReactPaginate table CSS over */
 .search-bar {
   height: 25px;
   padding: 2px;
