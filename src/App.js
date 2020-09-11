@@ -15,7 +15,7 @@ class App extends Component {
                   <Route
                     exact
                     path={path}
-                    key={Math.random()}
+                    key={path}
                     render={props => (
                       <C {...props} />
                     )}
